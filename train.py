@@ -16,11 +16,10 @@ Y = tf.placeholder(tf.int16, [None, 10])
 
 vgg = Vgg16(X)
 
-# 注意:logits参数为不经过softmax层的全链接输出
 loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=Y, logits=vgg.fc8))
 correct_pred = tf.equal(tf.argmax(Y, 1), tf.argmax(vgg.probs, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, dtype=tf.float32))
-# 不知道为什么Adam优化器会卡在局部最优...待解决
+
 # optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(loss)
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001).minimize(loss)
 saver = tf.train.Saver(tf.global_variables())
